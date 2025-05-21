@@ -873,6 +873,37 @@ config ARCH_ENABLE_MEMORY_HOTPLUG
 config ARCH_ENABLE_MEMORY_HOTREMOVE
 	def_bool y
 
+config CPU_CLUSTERS
+       bool "Use defined cpu clusters"
+       default n
+
+config LITTLE_CPU_MASK
+       int "Bitmask of available LITTLE CPUs"
+       depends on CPU_CLUSTERS
+       default 15
+       help
+          This is a bitmask specifying which of the CPUs are LITTLE in a
+          heterogeneous system. Use 0 if you are unsure, which just results in
+          this storing the bitmask of all available CPUs.
+
+config BIG_CPU_MASK
+       int "Bitmask of available big CPUs"
+       depends on CPU_CLUSTERS
+       default 112
+       help
+          This is a bitmask specifying which of the CPUs are big in a
+          heterogeneous system. Use 0 if you are unsure, which just results in
+          this storing the bitmask of all available CPUs.
+
+config PRIME_CPU_MASK
+       int "Bitmask of available prime CPUs"
+       depends on CPU_CLUSTERS
+       default 128
+       help
+          This is a bitmask specifying which of the CPUs are prime in a
+          heterogeneous system. Use 0 if you are unsure, which just results in
+          this storing the bitmask of all available CPUs.
+
 # The GPIO number here must be sorted by descending number. In case of
 # a multiplatform kernel, we just want the highest value required by the
 # selected platforms.

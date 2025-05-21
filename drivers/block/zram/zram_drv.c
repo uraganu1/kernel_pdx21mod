@@ -33,6 +33,7 @@
 #include <linux/sysfs.h>
 #include <linux/debugfs.h>
 #include <linux/cpuhotplug.h>
+#include <linux/tweaks.h>
 
 #include "zram_drv.h"
 
@@ -1841,8 +1842,10 @@ static ssize_t disksize_store(struct device *dev,
 	int err;
 
 	disksize = memparse(buf, NULL);
-	if (!disksize)
-		return -EINVAL;
+        if (!disksize || is_zramsize_overwritten()) {
+               disksize = (u64)SZ_1G * CONFIG_ZRAM_SIZE_OVERRIDE;
+               pr_debug("dbg - Overriding zram size to %li", disksize);
+       }
 
 	down_write(&zram->init_lock);
 	if (init_done(zram)) {

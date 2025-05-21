@@ -674,3 +674,9 @@ config SONY_EXT_UIM_CTRL
 	default n
 	help
 	  A misc driver related to UIM selector/enabler
+
+config CPUFREQCTRL
+        bool "CPU frequency controller"
+        default n
+        help
+          An internal cpu frequency controller

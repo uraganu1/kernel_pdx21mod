@@ -663,6 +663,9 @@ int cpufreq_table_index_unsorted(struct cpufreq_policy *policy,
 int cpufreq_frequency_table_get_index(struct cpufreq_policy *policy,
 		unsigned int freq);
 
+int cpufreq_frequency_table_get_table(struct cpufreq_policy *policy,
+                unsigned int freq_table[]);
+
 ssize_t cpufreq_show_cpus(const struct cpumask *mask, char *buf);
 
 #ifdef CONFIG_CPU_FREQ

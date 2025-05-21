@@ -15,6 +15,7 @@
 struct sec_ts_data *tsp_info;
 
 #include "include/sec_ts.h"
+#include <linux/tweaks.h>
 
 static int report_rejected_event = 0;
 module_param(report_rejected_event, int, 0660);
@@ -3204,6 +3205,7 @@ int drm_notifier_callback(struct notifier_block *self, unsigned long event, void
 				 "???");
 			switch (blank) {
 			case DRM_BLANK_POWERDOWN:
+				lcd_notifier_call_chain(LCD_EVENT_DOZE, NULL);
 				if (!ts->after_work.done) {
 					input_info(true, &ts->client->dev, "not already sleep out\n");
 					mutex_unlock(&ts->aod_mutex);
@@ -3219,6 +3221,7 @@ int drm_notifier_callback(struct notifier_block *self, unsigned long event, void
 					time.tv_sec, time.tv_nsec);
 				break;
 			case DRM_BLANK_UNBLANK:
+				lcd_notifier_call_chain(LCD_EVENT_DOZE_SUSPEND, NULL);
 				break;
 			default:
 				break;
@@ -3231,8 +3234,10 @@ int drm_notifier_callback(struct notifier_block *self, unsigned long event, void
 				 "???");
 			switch (blank) {
 			case DRM_BLANK_POWERDOWN:
+				lcd_notifier_call_chain(LCD_EVENT_OFF, NULL);
 				break;
 			case DRM_BLANK_UNBLANK:
+				lcd_notifier_call_chain(LCD_EVENT_ON, NULL);
 				if (!ts->after_work.done && !ts->after_work.err) {
 					input_info(true, &ts->client->dev, "not already sleep out\n");
 				} else {

@@ -228,6 +228,24 @@ int cpufreq_frequency_table_get_index(struct cpufreq_policy *policy,
 }
 EXPORT_SYMBOL_GPL(cpufreq_frequency_table_get_index);
 
+int cpufreq_frequency_table_get_table(struct cpufreq_policy *policy,
+                               unsigned int freq_table[])
+{
+       struct cpufreq_frequency_table *pos, *table = policy->freq_table;
+       int idx;
+
+       if (unlikely(!table)) {
+               pr_debug("%s: Unable to find frequency table\n", __func__);
+               return -ENOENT;
+       }
+
+       cpufreq_for_each_valid_entry_idx(pos, table, idx)
+               freq_table[idx] = pos->frequency;
+
+       return idx;
+}
+EXPORT_SYMBOL_GPL(cpufreq_frequency_table_get_table);
+
 /**
  * show_available_freqs - show available frequencies for the specified CPU
  */
